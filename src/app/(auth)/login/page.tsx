@@ -6,20 +6,24 @@ import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { login } from "@/api/requests";
+import { getUser, login } from "@/api/requests";
 import { Button } from "@/components/ui/button";
 import loginBg from "@/assets/images/loginBg.png";
+import { useAuth } from "@/providers/auth-provider";
 
 interface LoginProps {
 	username: string;
 	password: string;
 }
 
-export default function SignupFormDemo() {
+export default function SignupForm() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
+
+	const { setUser } = useAuth();
+	const { user } = useAuth();
 	const router = useRouter();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,6 +38,12 @@ export default function SignupFormDemo() {
 		try {
 			const response = await login(credentials);
 			console.log("Response:", response.data);
+
+			const userId = response.data.id; // Assuming the login response contains a user ID
+			const userResponse = await getUser(userId); // Fetch user details using the getUser function
+      console.log("User Data:", userResponse.data);
+      
+			setUser(userResponse.data); // Set user data in context
 			router.push("/");
 		} catch (error) {
 			console.error("Error:", error);
@@ -42,12 +52,8 @@ export default function SignupFormDemo() {
 			setLoading(false);
 		}
 	};
-
-	useEffect(() => {
-		// console.log(router);
-	}, [router]);
 	return (
-		<div className="w-full mx-auto rounded-none md:rounded-2xl px-4 md:px-8 shadow-input bg-white dark:bg-black">
+		<main className="w-full mx-auto rounded-none md:rounded-2xl px-4 md:px-8 shadow-input bg-white dark:bg-black">
 			<div className="flex items-center gap-10">
 				<div className="w-[50%] flex justify-center items-center">
 					<Image src={loginBg} alt="login background" className="w-[80%]" />
@@ -78,12 +84,12 @@ export default function SignupFormDemo() {
 							/>
 						</LabelInputContainer>
 						<Button size="lg" type="submit">
-							Login &rarr;
+							Login {user && <span>&rarr;</span>}
 						</Button>
 					</form>
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 }
 

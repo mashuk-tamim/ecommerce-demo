@@ -20,4 +20,9 @@ export const login = ({username, password}:LoginProps) => {
 	});
 };
 
+// Get user details by user ID
+export const getUser = (userId: string) => {
+	return axiosInstance.get(`/users/${userId}`);
+};
+
 export default axiosInstance;
