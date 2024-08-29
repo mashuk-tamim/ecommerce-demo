@@ -18,7 +18,6 @@ import {
 
 export default function Navbar() {
 	const { user, logout } = useAuth();
-	// console.log("navbar:", user);
 	return (
 		<nav className="w-screen">
 			<div className="max-w-7xl mx-auto px-5 lg:px-10 h-[60px] border flex items-center justify-between">

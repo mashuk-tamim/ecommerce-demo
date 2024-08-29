@@ -1,5 +1,4 @@
 "use client";
-import Navbar from "@/app/_components/Navbar";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
@@ -19,11 +18,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState(null);
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
 	const logout = () => {
-		setUser(null); // Reset user state
-		router.push("/login"); // Redirect to login page
+		setUser(null);
+		router.push("/login");
 	};
 
 	return (
