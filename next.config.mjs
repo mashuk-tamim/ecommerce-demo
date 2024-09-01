@@ -1,7 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
-		domains: ["dummyjson.com"], // Add the external image domain here
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "images.unsplash.com",
+			},
+			{
+				protocol: "https",
+				hostname: "cdn.dummyjson.com",
+			},
+		],
 	},
 };
 
