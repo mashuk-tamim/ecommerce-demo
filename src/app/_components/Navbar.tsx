@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import logo from "@/assets/images/shopping.png";
-import { ModeToggle } from "@/components/example/mode-toogle";
+import { ModeToggle } from "@/components/example/mode-toggle";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useAuth } from "@/providers/auth-provider";
@@ -18,10 +18,9 @@ import {
 
 export default function Navbar() {
 	const { user, logout } = useAuth();
-	// console.log("navbar:", user);
 	return (
 		<nav className="w-screen">
-			<div className="max-w-7xl mx-auto px-5 lg:px-10 h-[60px] border flex items-center justify-between">
+			<div className=" mx-auto px-5 lg:px-10 h-[60px] border flex items-center justify-between">
 				<Link href={"/"}>
 					<div className="flex items-center gap-2">
 						<Image src={logo} alt="" className="size-10" />
@@ -42,7 +41,8 @@ export default function Navbar() {
 										alt="avatar"
 										width={100}
 										height={100}
-										className="size-9 rounded-full border"
+                    className="size-9 rounded-full border"
+                    priority
 									/>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent>

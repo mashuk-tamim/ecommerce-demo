@@ -10,6 +10,8 @@ import { getUser, login } from "@/api/requests";
 import { Button } from "@/components/ui/button";
 import loginBg from "@/assets/images/loginBg.png";
 import { useAuth } from "@/providers/auth-provider";
+// import { createSession } from "@/app/actions/sessions";
+import axios, { AxiosError } from "axios";
 
 interface LoginProps {
 	username: string;
@@ -17,34 +19,33 @@ interface LoginProps {
 }
 
 export default function SignupForm() {
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(false);
 
 	const { setUser } = useAuth();
 	const { user } = useAuth();
-	const router = useRouter();
+	const { push } = useRouter();
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		setLoading(true);
 		setError(false);
-		console.log(username, password);
-		const credentials: LoginProps = {
-			username: username,
-			password: password,
+		const payload: LoginProps = {
+			username: event.currentTarget.username.value,
+			password: event.currentTarget.password.value,
 		};
-		try {
-			const response = await login(credentials);
-			console.log("Response:", response.data);
+    console.log(payload);
 
-			const userId = response.data.id; // Assuming the login response contains a user ID
-			const userResponse = await getUser(userId); // Fetch user details using the getUser function
-      console.log("User Data:", userResponse.data);
+		try {
+			const response = await login(payload);
+			console.log("Response:", response.data);
       
-			setUser(userResponse.data); // Set user data in context
-			router.push("/");
+      const token = response.data.token;
+      const user = await getUser(token);
+      console.log("User Data:", user.data);
+
+			setUser(user.data); // Set user data in context
+			push("/");
 		} catch (error) {
 			console.error("Error:", error);
 			setError(true);
@@ -65,23 +66,11 @@ export default function SignupForm() {
 					<form className="my-8 " onSubmit={handleSubmit}>
 						<LabelInputContainer className="mb-4">
 							<Label htmlFor="username">Username</Label>
-							<Input
-								id="username"
-								placeholder=""
-								type="username"
-								value={username}
-								onChange={(e) => setUsername(e.target.value)}
-							/>
+							<Input id="username" placeholder="" type="username" />
 						</LabelInputContainer>
 						<LabelInputContainer className="mb-8">
 							<Label htmlFor="password">Password</Label>
-							<Input
-								id="password"
-								placeholder=""
-								type="password"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-							/>
+							<Input id="password" placeholder="" type="password" />
 						</LabelInputContainer>
 						<Button size="lg" type="submit">
 							Login {user && <span>&rarr;</span>}
