@@ -1,55 +1,48 @@
-// import { COOKIE_NAME } from "@/constants";
-import { serialize } from "cookie";
-import { sign } from "jsonwebtoken";
 import { NextResponse } from "next/server";
+import axios from "axios";
+import { createSession } from "@/app/actions/sessions"; // Adjust the import path as needed
 
-const MAX_AGE = 60 * 60 * 24 * 30; // 30 days;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+import { LOGIN_API, ME_API, PRODUCTS_API,  } from "@/api/endpoint";
 
-const COOKIE_NAME = "OurSiteJWT";
+const axiosInstance = axios.create({
+	baseURL: BASE_URL,
+	headers: {
+		"Content-Type": "application/json",
+	},
+});
 
 export async function POST(request: Request) {
-	const body = await request.json();
+	const { username, password } = await request.json();
 
-	const { username, password } = body;
-
-	if (username !== "admin" || password !== "admin") {
-		return NextResponse.json(
+	try {
+		// Authenticate the user
+		const authResponse = await axiosInstance.post(
+			LOGIN_API,
 			{
-				message: "Unauthorized",
-			},
-			{
-				status: 401,
+				username,
+				password,
 			}
 		);
-	}
 
-	// Always check this
-	const secret = process.env.JWT_SECRET || "";
-
-	const token = sign(
-		{
-			username,
-		},
-		secret,
-		{
-			expiresIn: MAX_AGE,
+		if (!authResponse.data.success) {
+			return NextResponse.json(
+				{ success: false, error: "Authentication failed" },
+				{ status: 401 }
+			);
 		}
-	);
 
-	const serialized = serialize(COOKIE_NAME, token, {
-		httpOnly: true,
-		secure: process.env.NODE_ENV === "production",
-		sameSite: "strict",
-		maxAge: MAX_AGE,
-		path: "/",
-	});
+		// Get user data
+		const userId = authResponse.data.userId; // Adjust based on your response structure
 
-	const response = {
-		message: "Authenticated!",
-	};
+		// Create session
+		await createSession(userId);
 
-	return new Response(JSON.stringify(response), {
-		status: 200,
-		headers: { "Set-Cookie": serialized },
-	});
+		return NextResponse.json({ success: true, userId });
+	} catch (error: any) {
+		return NextResponse.json(
+			{ success: false, error: error.message },
+			{ status: 500 }
+		);
+	}
 }

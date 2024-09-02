@@ -10,7 +10,7 @@ import { getUser, login } from "@/api/requests";
 import { Button } from "@/components/ui/button";
 import loginBg from "@/assets/images/loginBg.png";
 import { useAuth } from "@/providers/auth-provider";
-import { createSession } from "@/api/sessions";
+// import { createSession } from "@/app/actions/sessions";
 import axios, { AxiosError } from "axios";
 
 interface LoginProps {
@@ -43,9 +43,6 @@ export default function SignupForm() {
       const token = response.data.token;
       const user = await getUser(token);
       console.log("User Data:", user.data);
-
-			// const session = await createSession(userId);
-			// console.log(session);
 
 			setUser(user.data); // Set user data in context
 			push("/");

@@ -1,6 +1,6 @@
 import axios from "axios";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 import { LOGIN_API, ME_API, PRODUCTS_API,  } from "./endpoint";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface LoginProps {
 	username: string;
@@ -37,7 +37,7 @@ export const login = ({ username, password }: LoginProps) => {
 		username,
 		password,
   });
-  console.log(response);
+  console.log("this is the response", response);
   return response;
 };
 

@@ -11,6 +11,7 @@ const nextConfig = {
 				hostname: "cdn.dummyjson.com",
 			},
 		],
+		domains: ["dummyjson.com"],
 	},
 };
 
