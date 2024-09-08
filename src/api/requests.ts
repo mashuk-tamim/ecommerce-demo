@@ -1,5 +1,7 @@
+"use server"
 import axios from "axios";
 import { LOGIN_API, ME_API, PRODUCTS_API } from "./endpoint";
+// import { redirect } from "next/navigation";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 interface LoginProps {

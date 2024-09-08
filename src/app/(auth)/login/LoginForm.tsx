@@ -9,9 +9,8 @@ import { getUser, login } from "@/api/requests";
 import { Button } from "@/components/ui/button";
 import loginBg from "@/assets/images/loginBg.png";
 import { useAuth } from "@/providers/auth-provider";
-// import { createSession } from "@/app/actions/sessions";
 import axios, { AxiosError } from "axios";
-import { LoginUser } from "@/app/actions/login-user";
+import { LoginUser } from "@/app/actions/auth";
 import LoginButton from "./LoginButton";
 import { useToast } from "@/hooks/use-toast";
 

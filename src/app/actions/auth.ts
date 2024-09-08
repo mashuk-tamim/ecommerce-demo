@@ -1,12 +1,12 @@
 "use server";
 
 import { getUser, login } from "@/api/requests";
-// import { useAuth } from "@/providers/auth-provider";
-// import { useRouter } from "next/navigation";
+import { useAuth } from "@/providers/auth-provider";
 import axios from "axios"; 
+import { createSession } from "./sessions";
+import { redirect } from "next/navigation";
 
 export const LoginUser = async (formData: FormData) => {
-	// const {setUser} = useAuth()
 
 	const username = formData.get("username");
 	const password = formData.get("password");
@@ -22,7 +22,9 @@ export const LoginUser = async (formData: FormData) => {
 
 		const token = response?.data?.token;
 		const user = await getUser(token);
-		console.log("User Data:", user?.data);
+    console.log("User Data:", user?.data);
+    
+    await createSession(user?.data?.id);
 
 		// Return success data
 		return { error: null, data: user?.data };
@@ -38,3 +40,9 @@ export const LoginUser = async (formData: FormData) => {
 		}
 	}
 };
+
+export async function logout() {
+  // deleteSession();
+  console.log("delete session")
+	redirect("/login");
+}

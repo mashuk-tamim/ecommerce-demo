@@ -19,7 +19,7 @@ export async function createSession(userId: string) {
 	});
 }
 
-export async function encrypt(payload:any) {
+export async function encrypt(payload:any) { //payload type is forced to any
 	return new SignJWT(payload)
 		.setProtectedHeader({ alg: "HS256" })
 		.setIssuedAt()
@@ -37,3 +37,25 @@ export async function decrypt(session: string | undefined = "") {
 		console.log("Failed to verify session");
 	}
 }
+
+export async function updateSession() {
+	const session = cookies().get("session")?.value;
+	const payload = await decrypt(session);
+
+	if (!session || !payload) {
+		return null;
+	}
+
+	const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+	cookies().set("session", session, {
+		httpOnly: true,
+		secure: true,
+		expires: expires,
+		sameSite: "lax",
+		path: "/",
+	});
+}
+
+// export function deleteSession() {
+// 	cookies().delete("session");
+// }

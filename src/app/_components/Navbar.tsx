@@ -15,9 +15,10 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+// import { logout } from "../actions/auth";
 
 export default function Navbar() {
-	const { user, logout } = useAuth();
+	const { user } = useAuth();
 	return (
 		<nav className="w-screen">
 			<div className=" mx-auto px-5 lg:px-10 h-[60px] border flex items-center justify-between">
@@ -51,7 +52,7 @@ export default function Navbar() {
 									<DropdownMenuItem>
 										<Link href="/profile">Profile</Link>
 									</DropdownMenuItem>
-									<DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
+									{/* <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem> */}
 								</DropdownMenuContent>
 							</DropdownMenu>
 						</div>

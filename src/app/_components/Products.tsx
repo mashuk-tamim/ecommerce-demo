@@ -3,7 +3,6 @@
 import { getProducts } from "@/api/requests";
 import { Product } from "@/types/product-types";
 import React, { useEffect, useState } from "react";
-import { ThreeDCard } from "./ThreeDCard";
 import { ProductCard } from "./ProductCard";
 
 
