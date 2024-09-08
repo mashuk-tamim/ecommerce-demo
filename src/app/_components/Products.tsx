@@ -3,7 +3,6 @@
 import { getProducts } from "@/api/requests";
 import { Product } from "@/types/product-types";
 import React, { useEffect, useState } from "react";
-import { ThreeDCard } from "./ThreeDCard";
 import { ProductCard } from "./ProductCard";
 
 
@@ -24,8 +23,7 @@ export default function Products() {
   }, []);
   return (
     <div className="grid grid-cols-3 gap-5 p-10">
-      {products.map((product, idx) => (
-        // <ThreeDCard product={product} key={product.id}/>
+      {products.map((product) => (
         <ProductCard product={product} key={product.id}/>
       ))}
 		</div>

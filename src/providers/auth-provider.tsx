@@ -11,7 +11,7 @@ interface User {
 interface AuthContextType {
 	user: any;
 	setUser: (user: any) => void;
-	logout: () => void;
+	// logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,13 +21,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState();
   const router = useRouter();
 
-	const logout = () => {
-		setUser(null);
-		router.push("/login");
-	};
+	// const logout = () => {
+  //   setUser(null);
+	// 	router.push("/login");
+	// };
 
 	return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser}}>
 			{children}
 		</AuthContext.Provider>
 	);
